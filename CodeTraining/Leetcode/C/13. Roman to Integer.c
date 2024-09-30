@@ -53,64 +53,42 @@ Output: 1994
 Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
 */
 
-// An elegant solution is to make a state machine.
-int romanToInt(char* s) {
-    int n = 0;
-    char c;
-    
-    while (c = *s ++) {
-        switch (c) {
-            case 'I':
-                if (*s == 'V') {
-                    n += 4;
-                    s ++;
-                } else if (*s == 'X') {
-                    n += 9;
-                    s ++;
-                } else {
-                    n += 1;
-                }
-                break;
-            case 'V':
-                n += 5;
-                break;
-            case 'X':
-                if (*s == 'L') {
-                    n += 40;
-                    s ++;
-                } else if (*s == 'C') {
-                    n += 90;
+int mapInt(char ch) {
+    switch(ch) { 
+    case 'V':    return 5;
+    case 'X':    return 10;
+    case 'L':    return 50;
+    case 'C':    return 100;
+    case 'D':    return 500;
+    case 'M':    return 1000;
+    }
+    return 1;
+}
 
-                } else {
-                    n += 10;
-                }
-                break;
-            case 'L':
-                n += 50;
-                break;
-            case 'C':
-                if (*s == 'D') {
-                    n += 400;
-                    s ++;
-                } else if (*s == 'M') {
-                    n += 900;
-                    s ++;
-                } else {
-                    n += 100;
-                }
-                break;
-            case 'D':
-                n += 500;
-                break;
-            case 'M':
-                n += 1000;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    return n;
+int romanToInt(char* s) {
+    int sum=0,len=strlen(s), v=0, prev=0,tmp=0;
+
+    if(len==0)   return 0;
+
+    prev = mapInt(s[0]);
+    tmp=prev;
+    for(int i=1; i<len; i++) {
+        v = mapInt(s[i]);
+        if(v==prev) {
+            tmp+=v;
+        } else {
+            if(prev<v) {
+                sum+=(v-tmp);
+                tmp=0;
+            } else {
+                sum+=tmp;
+                tmp=v;
+            }
+        }
+        prev=v;
+    }
+
+    return sum+tmp;
 }
 
 
