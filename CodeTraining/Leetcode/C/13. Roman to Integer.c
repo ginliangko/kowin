@@ -66,14 +66,14 @@ int mapInt(char ch) {
 }
 
 int romanToInt(char* s) {
-    int sum=0,len=strlen(s), v=0, prev=0,tmp=0;
-
+    int len=strlen(s);
     if(len==0)   return 0;
 
-    prev = mapInt(s[0]);
-    tmp=prev;
+    int prev = mapInt(s[0]);
+    int tmp=prev;
+    int sum=0;
     for(int i=1; i<len; i++) {
-        v = mapInt(s[i]);
+        int v = mapInt(s[i]);
         if(v==prev) {
             tmp+=v;
         } else {
@@ -90,7 +90,6 @@ int romanToInt(char* s) {
 
     return sum+tmp;
 }
-
 
 /*
 Difficulty:Easy
