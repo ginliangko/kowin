@@ -23,25 +23,22 @@ Note:
 All given inputs are in lowercase letters a-z.
 */
 
-char* longestCommonPrefix(char** strs, int strsSize) {
-    int i, n = 0;
-    char c;
+cchar* longestCommonPrefix(char** strs, int strsSize) {
+    int j=0;
+    char c=0;
 
-    if (strsSize == 0) return "";
-    
-    while (c = strs[0][n]) {
-        for (i = 1; i < strsSize; i ++) {
-            if (strs[i][n] != c) {
-                strs[0][n] = 0;
-                return strs[0];
-            }
-        }
-        n ++;
-    }
-    strs[0][n] = 0;
-    return strs[0];
+    while(c=strs[0][j]) {
+        for(int i=0; i<strsSize; i++) {
+            if(c!=strs[i][j]) {
+                strs[0][j]=0;
+                return strs[0];
+            }
+        }
+        j++;
+    }
+    strs[0][j]=0;
+    return strs[0];
 }
-
 
 /*
 Difficulty:Easy
