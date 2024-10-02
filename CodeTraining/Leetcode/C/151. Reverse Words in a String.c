@@ -69,7 +69,32 @@ void reverseWords(char *s) {
     }
 }
 
+/*
+second solution
+char* reverseWords(char* s) {
+    int len=strlen(s);
+    char *newS=calloc(len+1,sizeof(char));
+    int start=len-1, end=start, i=0;
 
+    while(start>=0) {
+        while(end>=0 && s[end]==' ')     end--;     // skip the space
+
+        start=end;
+        while(start>=0&&s[start]!=' ')   start--;   // find the first character of the word
+
+        if(end>=0) {
+            strncpy(&newS[i], &s[start+1], end-start);  // copy word to new memory array
+            i+=(end-start);
+            newS[i++]=' ';
+            end=start;
+        }
+    }
+    newS[i-1]=0;
+    return newS;
+}
+
+
+*/
 /*
 Difficulty:Medium
 Total Accepted:163.3K
