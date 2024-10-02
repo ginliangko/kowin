@@ -61,10 +61,10 @@ char* convert(char* s, int numRows) {
     char *newS=calloc(len+1,sizeof(char));
 
     int i=0;
-    for(int k=0; k<numRows&& i<len; k++) {
+    for(int k=0; k<numRows; k++) {
         int cnt=k;
         int flag=1;
-        for(int j=k; j<len && i<len; j++) {
+        for(int j=k; j<len; j++) {
             if(cnt==k)          newS[i++]=s[j];
             if(cnt>=numRows-1)  flag=-1;
             else if(cnt<=0)     flag=1;
