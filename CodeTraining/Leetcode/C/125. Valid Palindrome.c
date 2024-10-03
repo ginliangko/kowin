@@ -17,6 +17,27 @@ Have you consider that the string might be empty? This is a good question to ask
 For the purpose of this problem, we define empty string as valid palindrome.
 */
 
+char cToC(char c) {
+    if(((c>='a') && (c<='z')) || ((c>='0') && (c<='9')))    return c;
+    else if((c>='A') && (c<='Z'))                           return c-'A'+'a';
+    else                                                    return ' ';
+}
+
+bool isPalindrome(char* s) {
+    int start=0;
+    int end=strlen(s)-1;
+
+    while(start<end) {
+        while(start<end&&cToC(s[start])==' ')  start++;
+        while(start<end&&cToC(s[end])==' ')    end--;
+        if(cToC(s[start++])!=cToC(s[end--])) {return false;}
+    }
+
+    return true;
+}
+
+/*
+// Solution from network
 bool isPalindrome(char* s) {
     int i = 0;
     int j;
@@ -50,7 +71,7 @@ bool isPalindrome(char* s) {
     }
     return true;
 }
-
+*/
 
 /*
 Difficulty:Easy
