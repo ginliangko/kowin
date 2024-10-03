@@ -5,7 +5,24 @@ Given n non-negative integers a1, a2, ..., an, where each represents a point at 
 
 Note: You may not slant the container and n is at least 2.
 */
+int maxArea(int* height, int heightSize) {
+    int start=0, end=heightSize-1;
+    int max=0, s=0;
 
+    while(start<end) {
+        if(height[start]<height[end])   s=height[start]*(end-start);
+        else                            s=height[end]*(end-start);
+
+        if(max<s)  max=s;
+
+        if(height[start]<height[end])   start++;
+        else                            end--;
+    }
+    
+    return max;
+}
+
+/* Solution from internet
 int maxArea(int* height, int heightSize) {
     int l, r, x, water, max = 0;
     int i, j;
@@ -36,7 +53,7 @@ int maxArea(int* height, int heightSize) {
 #endif
     return max;
 }
-
+*/
 
 /*
 Difficulty:Medium
