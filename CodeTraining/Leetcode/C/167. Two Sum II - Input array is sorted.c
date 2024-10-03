@@ -17,6 +17,26 @@ Output: index1=1, index2=2
  * Note: The returned array must be malloced, assume caller calls free().
  */
 int* twoSum(int* numbers, int numbersSize, int target, int* returnSize) {
+    int n1=0, n2=numbersSize-1;
+    int *retI=malloc(2*sizeof(int));
+
+    while(n1<n2) {
+        int sum = numbers[n1]+numbers[n2];
+        if(sum==target)    break;
+        else if (sum<target)     n1++;
+        else if (sum>target)     n2--;
+    }
+    
+    *returnSize=2;
+    retI[0]=n1+1;
+    retI[1]=n2+1;
+    return retI;
+}
+
+/*
+// Solution from internet
+
+int* twoSum(int* numbers, int numbersSize, int target, int* returnSize) {
     int *result;
     int i, j, total;
 ​
@@ -43,7 +63,7 @@ int* twoSum(int* numbers, int numbersSize, int target, int* returnSize) {
 ​
     return result;
 }
-
+*/
 
 /*
 Difficulty:Easy
