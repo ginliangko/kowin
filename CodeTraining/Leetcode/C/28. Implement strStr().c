@@ -26,6 +26,25 @@ int strStr(char* haystack, char* needle) {
     return -1;
 }
 
+/*
+// 2nd solution
+int strStr(char* haystack, char* needle) {
+    int lenDest=strlen(haystack);
+    int lenSrc=strlen(needle);
+
+    int i=0, j=0;
+    for(int i=0; i<lenDest; i++) {
+        if(haystack[i]==needle[j]) {
+            j++;
+            if(j==lenSrc)   return i-(lenSrc-1);
+        } else {
+            if(j>0) i-=j;
+            j=0;
+        }
+    }
+    return -1;
+}
+*/
 
 /*
 Difficulty:Easy
