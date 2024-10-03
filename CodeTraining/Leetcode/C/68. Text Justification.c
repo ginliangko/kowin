@@ -50,6 +50,59 @@ In this case, that line should be left-justified.
  * Return an array of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
  */
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+char** fullJustify(char** words, int wordsSize, int maxWidth, int* returnSize) {
+    char **returnS=malloc(20*sizeof(char *));
+
+    int start=0, end=0, iRet=0;
+    while(end<wordsSize) {
+        start=end;
+        int lCnt=0;
+        int slot=0;
+        while(end<wordsSize) {
+            int l=strlen(words[end]);
+            if((lCnt + slot + l) > maxWidth) break;
+            lCnt+=l;
+            slot++;
+            end++;
+        }
+
+        returnS[iRet]=calloc(maxWidth+1, sizeof(char));
+        int index=0;
+        int eSpace = maxWidth-lCnt;
+        for(int i=start; i<end; i++) {
+            strcpy(&returnS[iRet][index], words[i]);
+            index+=strlen(words[i]);
+
+            int space = 0;
+            if((slot-1)>0) {
+                if(end==wordsSize)
+                    space=1;
+                else
+                    space = eSpace/(slot-1) + (eSpace%(slot-1)>0?1:0);
+            } else {
+                space = maxWidth-index;
+            }
+
+            memset(&returnS[iRet][index], ' ', space);
+            index+=space;
+            eSpace-=space;
+            slot--;
+        }
+
+        iRet++;
+    }
+
+    *returnSize=iRet;
+
+    return returnS;
+}
+
+/*
+// Solution from network
 char *make_str1(char **words, int *lens, int x, int l, int width) {
     char *s;
     int i, j, k, num_of_space, rem_of_space;
@@ -156,7 +209,7 @@ char** fullJustify(char** words, int wordsSize, int maxWidth, int* returnSize) {
     
     return p;
 }
-
+*/
 
 /*
 Difficulty:Hard
