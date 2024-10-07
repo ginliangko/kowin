@@ -18,6 +18,61 @@ A solution set is:
  * Return an array of arrays of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
  */
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+
+int compFunc(const void *a, const void *b) {
+    return (*(int *)a - *(int *)b);
+}
+
+int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
+    int maxCol = 128;
+    int **retI=malloc(maxCol*sizeof(int *));
+    int ri=0;
+
+    *returnColumnSizes = (int*)malloc(maxCol*sizeof(int*));
+
+    qsort(nums, numsSize, sizeof(int), compFunc);
+
+    for(int i=0; i<numsSize-2; i++) {
+        if(i==0 || (i>0 && nums[i] != nums[i-1])) {
+            int lo=i+1, hi=numsSize-1, sum=0-nums[i];
+            while(lo<hi) {
+                if(nums[lo]+nums[hi]==sum) {
+                    if(ri>=maxCol) {
+                        maxCol += maxCol;
+                        retI=realloc(retI, maxCol*sizeof(int *));
+                        *returnColumnSizes = (int*)realloc((*returnColumnSizes), maxCol*sizeof(int*));
+                    }
+                    retI[ri]=malloc(3*sizeof(int));
+                    retI[ri][0]=nums[i];
+                    retI[ri][1]=nums[lo];
+                    retI[ri][2]=nums[hi];
+                    (*returnColumnSizes)[ri]=3;
+                    ri++;
+
+                    while(lo<hi && nums[lo]==nums[lo+1])  lo++;
+                    while(lo<hi && nums[hi]==nums[hi-1])  hi--;
+                    lo++;
+                    hi--;
+                } else if(nums[lo]+nums[hi]<sum)  {
+                    lo++;
+                } else {
+                    hi--;
+                }
+            }
+        }
+    }
+
+    *returnSize=ri;
+
+    return retI;
+}
+
+/* Second solution
 typedef struct res_s {
     int **p;
     int sz;
@@ -76,6 +131,7 @@ int** threeSum(int* nums, int numsSize, int* returnSize) {
     *returnSize = res.n;
     return res.p;
 }
+*/
 
 /*
 Difficulty:Medium
