@@ -23,53 +23,54 @@ A solution set is:
  * The sizes of the arrays are returned as *returnColumnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
+/**
+ * Return an array of arrays of size *returnSize.
+ * The sizes of the arrays are returned as *returnColumnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
 
 int compFunc(const void *a, const void *b) {
     return (*(int *)a - *(int *)b);
 }
 
 int** threeSum(int* nums, int numsSize, int* returnSize, int** returnColumnSizes) {
-    int maxCol = 128;
-    int **retI=malloc(maxCol*sizeof(int *));
-    int ri=0;
+    int step = 0;
+    int **retP=malloc(step*sizeof(int *));
+    int retI=0;
 
-    *returnColumnSizes = (int*)malloc(maxCol*sizeof(int*));
+    *returnColumnSizes=(int *)malloc(step*sizeof(int));
 
     qsort(nums, numsSize, sizeof(int), compFunc);
-
     for(int i=0; i<numsSize-2; i++) {
         if(i==0 || (i>0 && nums[i] != nums[i-1])) {
-            int lo=i+1, hi=numsSize-1, sum=0-nums[i];
+            int sum=0-nums[i];
+            int lo=i+1, hi=numsSize-1;
             while(lo<hi) {
                 if(nums[lo]+nums[hi]==sum) {
-                    if(ri>=maxCol) {
-                        maxCol += maxCol;
-                        retI=realloc(retI, maxCol*sizeof(int *));
-                        *returnColumnSizes = (int*)realloc((*returnColumnSizes), maxCol*sizeof(int*));
+                    if(retI>=step) {
+                        step+=32;
+                        retP=realloc(retP, step*sizeof(int *));
+                        *returnColumnSizes=(int *)realloc((*returnColumnSizes), step*sizeof(int));
                     }
-                    retI[ri]=malloc(3*sizeof(int));
-                    retI[ri][0]=nums[i];
-                    retI[ri][1]=nums[lo];
-                    retI[ri][2]=nums[hi];
-                    (*returnColumnSizes)[ri]=3;
-                    ri++;
+                    retP[retI]=malloc(3*sizeof(int));
+                    retP[retI][0]=nums[i];
+                    retP[retI][1]=nums[lo];
+                    retP[retI][2]=nums[hi];
+                    (*returnColumnSizes)[retI]=3;
+                    retI++;
 
-                    while(lo<hi && nums[lo]==nums[lo+1])  lo++;
-                    while(lo<hi && nums[hi]==nums[hi-1])  hi--;
+                    while(lo<hi && nums[lo]==nums[lo+1]) lo++;
+                    while(lo<hi && nums[hi]==nums[hi-1]) hi--;
+
                     lo++;
                     hi--;
-                } else if(nums[lo]+nums[hi]<sum)  {
-                    lo++;
-                } else {
-                    hi--;
-                }
+                } else if(nums[lo]+nums[hi]<sum)    lo++;
+                else hi--;
             }
         }
     }
-
-    *returnSize=ri;
-
-    return retI;
+    *returnSize=retI;
+    return retP;
 }
 
 /* Second solution
