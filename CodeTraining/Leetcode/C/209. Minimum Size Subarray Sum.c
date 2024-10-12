@@ -18,6 +18,21 @@ If you have figured out the O(n) solution, try coding another solution of which 
 Credits:Special thanks to @Freezen for adding this problem and creating all test cases.
 */
 
+int minSubArrayLen(int target, int* nums, int numsSize) {
+    int start=0, end=0, min=INT_MAX;
+    int sum=0;
+    
+    while(start<numsSize && end<numsSize) {
+        sum+=nums[end++];
+        if(sum>=target) {
+            min=min<(end-start)?min:(end-start);
+            sum-=(nums[start++]+nums[--end]);
+        }
+    }
+    return min<=numsSize?min:0;
+}
+
+/*
 int minSubArrayLen(int s, int* nums, int numsSize) {
     int i, j, k, d = 0;
     
@@ -36,7 +51,7 @@ int minSubArrayLen(int s, int* nums, int numsSize) {
     
     return d;
 }
-
+*/
 
 /*
 Difficulty:Medium
