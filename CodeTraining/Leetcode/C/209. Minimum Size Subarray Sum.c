@@ -32,7 +32,7 @@ int minSubArrayLen(int target, int* nums, int numsSize) {
     return min<=numsSize?min:0;
 }
 
-/*
+/* Solution from internet
 int minSubArrayLen(int s, int* nums, int numsSize) {
     int i, j, k, d = 0;
     
