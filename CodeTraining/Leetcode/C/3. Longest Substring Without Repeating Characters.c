@@ -13,24 +13,54 @@ Given "pwwkew", the answer is "wke", with the length of 3. Note that the answer 
 */
 
 int lengthOfLongestSubstring(char* s) {
-    int i, j, l, k = 0;
-    char c;
-    int pos[128] = { 0 };
-    char *p;
-    int n = 0;
-    
-    for (i = 0; s[i]; i ++) {
-        n ++;
-        c = s[i];
-        l = i - pos[c] + 1;
-        pos[c] = i + 1;
-        n = n < l ? n : l;
-        k = k > n ? k : n;
-    }
-    
-    return k;
+    int i, j, l, k = 0;
+    char c;
+    int pos[128] = { 0 };
+    char *p;
+    int n = 0;
+    
+    for (i = 0; s[i]; i ++) {
+        n ++;
+        c = s[i];
+        l = i - pos[c] + 1;
+        pos[c] = i + 1;
+        n = n < l ? n : l;
+        k = k > n ? k : n;
+    }
+    
+    return k;
 }
 
+/* Solution by Jerry
+int lengthOfLongestSubstring(char* s) {
+    int len=strlen(s), start=0, end=0, max=1, d=0;
+
+    if(len<=1)  return len;
+
+    while(start<len-1 && end<len-1) {
+        if(s[end]==s[end+1]) {
+            end++;
+            start=end;
+        } else {
+            for(int i=start; i<end; i++) {
+                if(s[i]==s[end+1]) {
+                    d=1;
+                    break;
+                }
+            }
+
+            if(d==0) {
+                end++;
+            } else {
+                start++;
+                d=0;
+            }
+        }
+        max=max>(end-start+1)?max:(end-start+1);
+    }
+    return max;
+}
+*/
 
 /*
 Difficulty:Medium
