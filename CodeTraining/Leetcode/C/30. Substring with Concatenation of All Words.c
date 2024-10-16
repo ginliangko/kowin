@@ -19,6 +19,132 @@ You should return the indices: [0,9].
  * Return an array of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
  */
+
+// Solution the fastest
+int* findSubstring(char* s, char** words, int wordsSize, int* returnSize) {
+    int nwords = 0, trieLen = 1, wordLen = strlen(words[0]), sLen = strlen(s);
+    int counts[wordsSize + 1], countMap[wordLen * wordsSize + 1], trie[wordLen * wordsSize][26];
+    memset(counts, 0, sizeof counts);
+    memset(countMap, 0, sizeof countMap);
+    memset(trie, 0, sizeof trie);
+    for (int i = 0; i < wordsSize; i++) {
+        int node = 0;
+        for (int j = 0; j < wordLen; j++) {
+            char next = words[i][j] - 'a';
+            if (trie[node][next] == 0) {
+                trie[node][next] = trieLen++;
+                //printf("trie[%d][%d]=%d\n", node, next, trieLen-1);
+            }
+            node = trie[node][next];
+        }
+        if (countMap[node] == 0){
+             countMap[node] = ++nwords;
+             //printf("countMap[%d]=%d\n", node, nwords);
+        }
+        counts[countMap[node]]++;
+        //printf("counts[%d]=%d\n", countMap[node], counts[countMap[node]]);
+    }
+    int* res = (int*) malloc(sLen * sizeof(int));
+    int resLen = 0;
+    int matches[sLen / wordLen + 1], windowCounts[nwords + 1];
+    for (int i = 0; i < wordLen; i++) {
+        if (i + wordLen * wordsSize > sLen) continue;
+
+        memset(windowCounts, 0, sizeof windowCounts);
+        int hits = 0, misses = 0;
+        for (int j = i, k = 0, l = 0; j <= sLen-wordLen; j += wordLen, k++) {
+            int node = 0;
+            for (int m = j; m < j + wordLen; m++) {
+                node = trie[node][s[m] - 'a'];
+                printf("%d, %d, %d, node=%d\n", i, j, m, node);
+                if (node == 0) { 
+                    misses++;
+                    matches[k] = -1; 
+                    break; 
+                }
+            }
+            printf("  node=%d\n", node);
+            if (node != 0) {
+                int countIdx = countMap[node];
+                matches[k] = countIdx;
+                windowCounts[countIdx]++;
+                printf("  matches[%d]=%d, windowCounts[%d]++=%d\n", k, matches[k], countIdx, windowCounts[countIdx]);
+                if (windowCounts[countIdx] == counts[countIdx]) {
+                    hits++;
+                    printf("  hits++=%d\n", hits);
+                } else {
+                    while (windowCounts[countIdx] > counts[countIdx]) {
+                        int leftIdx = matches[l++];
+                        printf("  l=%d, matches[%d]=%d, leftIdx=%d\n", l, l-1, leftIdx, leftIdx);
+                        if (leftIdx == -1) {
+                            misses--;
+                            printf("  misses=%d\n", misses);
+                        } else {
+                            if (windowCounts[leftIdx] == counts[leftIdx]) {
+                                hits--;
+                                printf("  hits--=%d\n", hits);
+                            }
+                            windowCounts[leftIdx]--;
+                            printf("  windowCounts[%d]--=%d\n", leftIdx, windowCounts[leftIdx]);
+                        }
+                    }
+                }
+            }
+
+            while (l <= k && matches[l] == -1) { 
+                l++;
+                misses--;
+            }
+            if (hits == nwords && misses == 0) {
+                res[resLen++] = i + l * wordLen;
+            }
+        }
+    }
+    *returnSize = resLen;
+    return res;
+}
+/* Solution Jerry
+int* findSubstring(char* s, char** words, int wordsSize, int* returnSize) {
+    int *flag=malloc(wordsSize*sizeof(int));
+    int sLen=strlen(s);
+    int wLen=strlen(words[0]);
+    int i=0;
+    int *retS = (int*) malloc(sLen * sizeof(int));
+
+    *returnSize=0;
+
+    // Go throuth all the characters in the string
+    while(i<sLen) {
+        int cnt=0;
+        int f=0;
+        memset(flag, 0, wordsSize*sizeof(int));
+
+        // go through all the words and compare to the substring start with index i
+        for(int k=0; k<wordsSize; k++) {
+            for(int j=0; j<wordsSize; j++) {
+                f%=wordsSize;
+                // if the string is the same, then set the flag to 1, else continue next
+                if(flag[f]==0 && !strncmp(&s[i+(k*wLen)], words[f], wLen)) {
+                    flag[f++]=1;
+                    cnt++;
+                    break;
+                } else f++;
+            }
+            if(cnt<(k+1))    break;
+        }
+
+        if(cnt==wordsSize)  {
+            *returnSize+=1;
+            retS[*returnSize-1]=i;
+        }
+        i++;
+    }
+
+    return retS;
+}
+*/
+
+/* Solution original
 typedef struct item_s {
     char *word;
     int idx;
@@ -55,12 +181,12 @@ item_t *lookup(item_t **ht, unsigned int hc, const char *w, int len) {
 int* findSubstring(char* s, char** words, int wordsSize, int* returnSize) {
     // 1. sort all words
     // 2. caculate each uniq words appears how many times
-    /* for (i = 0; i < length of string; i ++) {
-        substr = s[i ... length of one word]
-        if (substr is not one of the words or it appears more than what we have) continue;
-        increase the count of this word
-        if all words are found, add i into result
-    } */
+    // for (i = 0; i < length of string; i ++) {
+    //    substr = s[i ... length of one word]
+    //    if (substr is not one of the words or it appears more than what we have) continue;
+    //    increase the count of this word
+    //    if all words are found, add i into result
+    //} 
     
     item_t *ht[HF] = { 0 }, **sp, *p;
     int *counts, *counts2, total, i;
@@ -153,7 +279,7 @@ int* findSubstring(char* s, char** words, int wordsSize, int* returnSize) {
     
     return results;
 }
-
+*/
 
 /*
 Difficulty:Hard
