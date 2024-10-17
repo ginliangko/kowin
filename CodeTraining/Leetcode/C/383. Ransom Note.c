@@ -17,30 +17,51 @@ canConstruct("aa", "ab") -> false
 canConstruct("aa", "aab") -> true
 */
 
+// Runtime 4ms   Beats 70.68%   Memory 8.76MB Beats 42.23%
 bool canConstruct(char* ransomNote, char* magazine) {
-    int i, t = 0, n[26] = { 0 };
-    
-    while (ransomNote && *ransomNote) {
-        i = *ransomNote - 'a';
-        n[i] ++;
-        t ++;
-        ransomNote ++;
-    }
-    
-    while (magazine && *magazine) {
-        i = *magazine - 'a';
-        if (n[i]) {
-            n[i] --;
-            t --;
-        }
-        magazine ++;
-    }
-    
-    if (t) return false;
-    
-    return true;
+    int a[26]={0};
+    int v=0;
+
+    while(magazine && *magazine) {
+        v=*magazine-'a';
+        a[v]++;
+        magazine++;
+    }
+
+    for(int i=0; i<strlen(ransomNote); i++) {
+        v=ransomNote[i]-'a';
+        if(a[v]==0)  return false;
+        a[v]--;
+    }
+
+    return true;
 }
 
+/* Original solution
+bool canConstruct(char* ransomNote, char* magazine) {
+    int i, t = 0, n[26] = { 0 };
+ 
+    while (ransomNote && *ransomNote) {
+        i = *ransomNote - 'a';
+        n[i] ++;
+        t ++;
+        ransomNote ++;
+    }
+
+    while (magazine && *magazine) {
+        i = *magazine - 'a';
+        if (n[i]) {
+            n[i] --;
+            t --;
+        }
+        magazine ++;
+    }
+
+    if (t) return false;
+
+    return true;
+}
+*/
 
 /*
 Difficulty:Easy
