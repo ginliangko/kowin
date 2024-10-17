@@ -12,6 +12,32 @@ The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.
 Your algorithm should run in O(n) complexity.
 */
 
+// Runtime 24ms  Beats 100.00%, Memory 15.95MB  Beats 42.77%
+int compFunc(const void *a, const void *b) {
+    return *(unsigned int *)a-*(unsigned int *)b;
+}
+
+int longestConsecutive(int* nums, int numsSize) {
+
+    if(numsSize<2)  return numsSize;
+    qsort(nums, numsSize, sizeof(int), compFunc);
+
+    int max=0;
+    int cnt=0;
+    for(int i=0; i<numsSize-1; i++) {
+        if((nums[i]+1)==nums[i+1]) {
+            cnt++;
+        } else if(nums[i]==nums[i+1]) {
+            continue;
+        } else {
+            cnt=0;
+        }
+        max=(max>cnt)?max:cnt;
+    }
+    return max+1;
+}
+
+/* original solution
 typedef struct e_s {
     int key;
     int len;
@@ -70,6 +96,7 @@ int longestConsecutive(int* nums, int numsSize) {
     
     return len;
 }
+*/
 
 /*
 Difficulty:Hard
