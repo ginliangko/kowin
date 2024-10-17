@@ -20,6 +20,62 @@ Note: All inputs will be in lower-case.
  * The sizes of the arrays are returned as *columnSizes array.
  * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
  */
+
+/* Jerry Solution
+int qsFunc(const void *a, const void *b) {
+    return *(unsigned char *)a - *(unsigned char *)b;
+ }
+
+char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes) {
+    char **strsCpy=malloc(strsSize * sizeof(char *));
+    char ***retS=malloc(strsSize * sizeof(char**));
+    int f[strsSize];
+    int x=0, y=0;
+    int xLen=32;
+
+    for(int i=0; i<strsSize; i++) {
+        strsCpy[i]=(char *)malloc(strlen(strs[i])+1);
+        strcpy(strsCpy[i], strs[i]);
+        qsort(strsCpy[i], strlen(strsCpy[i]), sizeof(char), qsFunc);
+    }
+
+    memset(f, 0, sizeof(f));
+    *returnColumnSizes=(int *)malloc(strsSize * sizeof(int));
+
+    // Go through all the string
+    for(int i=0; i<strsSize; i++) {
+        if(f[i]!=0) continue;
+
+        retS[y]=(char **)malloc(xLen* sizeof(char *));
+        retS[y][x] = (char *)malloc((strlen(strs[i])+1)* sizeof(char));
+        strcpy((char *)retS[y][x++], (char *)strs[i]);
+
+        // Sort and compare each string 
+        for(int j=i+1; j<strsSize; j++) {
+            // If the compare result is 0, put in the same group
+            if(strcmp(strsCpy[i], strsCpy[j])==0) {
+                f[j]=1;
+                if(x>xLen) {
+                    xLen+=128;
+                    retS[y]=(char **)realloc(retS[y], xLen * sizeof(char *));
+                }
+                retS[y][x]=(char *)malloc((strlen(strs[j])+1) * sizeof(char));
+                strcpy((char *)retS[y][x], (char *)strs[j]);
+                x++;
+            }
+        }
+        (*returnColumnSizes)[y]=x;
+        y++;
+        x=0;
+    }
+
+    *returnSize=y;
+    
+    return retS;
+}
+*/
+
+/* Original solution
 typedef struct res_s {
     char ***p;
     int *csz;
@@ -123,6 +179,7 @@ char*** groupAnagrams(char** strs, int strsSize, int** columnSizes, int* returnS
     *returnSize = res.n;
     return res.p;
 }
+*/
 
 /*
 Difficulty:Medium
