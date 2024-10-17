@@ -14,6 +14,58 @@ Note:
 A valid Sudoku board (partially filled) is not necessarily solvable. Only the filled cells need to be validated.
 */
 
+bool isValidSudoku(char** board, int boardSize, int* boardColSize) {
+    int flag[9]={0};
+    int v=0;
+    char c=0;
+
+    // Check Column
+    for(int x=0; x<9; x++) {
+        memset(flag, 0, sizeof(flag));
+        for(int y=0; y<9; y++) {
+            v=0;
+            c=board[x][y];
+            if(c=='.')  continue;
+            else        v=c-'0';
+
+            if(++flag[v-1]>1)     return false;
+        }
+    }
+
+    // Check Row
+    for(int y=0; y<9; y++) {
+        memset(flag, 0, sizeof(flag));
+        for(int x=0; x<9; x++) {
+            v=0;
+            c=board[x][y];
+            if(c=='.')  continue;
+            else        v=c-'0';
+
+            if(++flag[v-1]>1)    return false;
+        }
+    }
+
+    // Check 3x3 block
+    for(int i=0; i<3; i++) {
+        for(int j=0; j<3; j++) {
+            memset(flag, 0, sizeof(flag));
+            for(int x=0; x<3; x++) {
+                for(int y=0; y<3; y++) {
+                    v=0;
+                    c=board[i*3+x][j*3+y];
+                    if(c=='.')  continue;
+                    else        v=c-'0';
+
+                    if(++flag[v-1]>1)     return false;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+/* Original solution
 #define VERIFY_HASH(I, J) do { \
     c = board[I][J]; \
     if (c >= '1' && c <= '9') { \
@@ -58,6 +110,7 @@ bool isValidSudoku(char** board, int boardRowSize, int boardColSize) {
     
     return true;
 }
+*/
 
 /*
 Difficulty:Medium
