@@ -77,15 +77,16 @@ bool isValidSudoku(char** board, int boardSize, int* boardColSize) {
 
 #define IDX(I, J) ((I) / 3 * (boardColSize + 2) / 3 + (J) / 3)
 
-bool isValidSudoku(char** board, int boardRowSize, int boardColSize) {
+bool isValidSudoku(char** board, int boardSize, int* bColSize) {
     int hash;
     int i, j, m, n;
     char c;
     int b;
-    
+    int boardColSize=*bColSize;
+    int boardRowSize=boardSize;
+
     int *hc, *hs, *buff;
     buff = calloc((boardColSize + ((boardRowSize + 2) / 3 * (boardColSize + 2) / 3)), sizeof(int));
-    //assert(buff);
     hc = &buff[0];
     hs = &buff[boardColSize];
     
