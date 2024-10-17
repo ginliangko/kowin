@@ -76,7 +76,8 @@ char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnCo
 */
 
 /* Original solution
-typedef struct res_s {
+
+ typedef struct res_s {
     char ***p;
     int *csz;
     int *cl;
@@ -93,7 +94,7 @@ typedef struct e_s {
 int new_buff(res_t *res) {
     int k, buffsz = 10;
     char **buff = malloc(buffsz * sizeof(char *));
-    //assert(buff);
+
     if (res->sz == 0) {
         res->sz = 100;
         res->p = malloc(res->sz * sizeof(char **));
@@ -149,7 +150,9 @@ void insert(e_t **ht, int code, char *key, int k) {
     e->shadow = ht[code % HSZ];
     ht[code % HSZ] = e;
 }
-char*** groupAnagrams(char** strs, int strsSize, int** columnSizes, int* returnSize) {
+
+char*** groupAnagrams(char** strs, int strsSize, int* returnSize, int** returnColumnSizes) {
+//char*** groupAnagrams(char** strs, int strsSize, int** columnSizes, int* returnSize) {
     res_t res = { 0 };
     e_t *ebuff[HSZ * 2] = { 0 };
     e_t **ht = &ebuff[HSZ];
@@ -175,7 +178,7 @@ char*** groupAnagrams(char** strs, int strsSize, int** columnSizes, int* returnS
     // TODO: clean hash table
     
     free(res.csz);
-    *columnSizes = res.cl;
+    *returnColumnSizes = res.cl;
     *returnSize = res.n;
     return res.p;
 }
