@@ -20,6 +20,59 @@ return [1,6],[8,10],[15,18].
  * Return an array of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
  */
+
+// Runtime 2ms Beats 100.00%, Memory 17.99MB Beats 55.36%
+
+
+int cmp(const void *a, const void *b) {
+    int **aa=a, **bb=b;
+    return (*aa)[0] - (*bb)[0];
+}
+ 
+int** merge(int** intervals, int intervalsSize, int* intervalsColSize, int* returnSize, int** returnColumnSizes) {
+    int **retS=malloc(intervalsSize*sizeof(int *));
+    int idx=0;
+
+    *returnSize=0;
+    if(intervalsSize<1) return NULL;
+
+    qsort(intervals, intervalsSize, 2*sizeof(int), cmp);
+
+    *returnColumnSizes=malloc(intervalsSize*sizeof(int));
+
+    int s=intervals[0][0];
+    int e=intervals[0][1];
+
+    for(int i=1; i<intervalsSize; i++) {
+        if(e>=intervals[i][0]) {
+            e=e>intervals[i][1]?e:intervals[i][1];
+            s=s<intervals[i][0]?s:intervals[i][0];
+        } else {
+            retS[idx]=malloc(2*sizeof(int));
+            retS[idx][0]=s;
+            retS[idx][1]=e;
+            s=intervals[i][0];
+            e=intervals[i][1];
+
+            (*returnColumnSizes)[idx]=2;
+            idx++;
+        }
+    }
+
+    retS[idx]=malloc(2*sizeof(int));
+    retS[idx][0]=s;
+    retS[idx][1]=e;
+
+    (*returnColumnSizes)[idx]=2;
+    idx++;
+
+    *returnSize=idx;
+    *intervalsColSize=2;
+
+    return retS;
+}
+
+/* original solution
 int cmp(const void *a, const void *b) {
     return (*(struct Interval *)a).start - (*(struct Interval *)b).start;
 }
@@ -45,7 +98,7 @@ struct Interval* merge(struct Interval* intervals, int intervalsSize, int* retur
     
     return intervals;
 }
-
+*/
 
 /*
 Difficulty:Medium
