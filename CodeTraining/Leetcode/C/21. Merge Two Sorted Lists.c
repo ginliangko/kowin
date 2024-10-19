@@ -11,6 +11,35 @@ Merge two sorted linked lists and return it as a new list. The new list should b
  *     struct ListNode *next;
  * };
  */
+
+// Runtime 0ms Beats 100.00%, Memory 10.86MB Beats 8.20%
+struct ListNode* mergeTwoLists(struct ListNode* list1, struct ListNode* list2) {
+    struct ListNode *ret=NULL, *h, *l1=list1, *l2=list2;
+
+    while(l1 || l2) {
+        if(!ret) {
+            ret=malloc(sizeof(struct ListNode));
+            ret->next=NULL;
+            h=ret;
+        } else {
+            h->next=malloc(sizeof(struct ListNode));
+            h=h->next;
+            h->next=NULL;
+        }
+
+        if((l1 && l2 && l1->val < l2->val) || (l1 && !l2)) {
+            h->val = l1->val;
+            l1=l1->next;
+        } else if((l1 && l2 && l1->val >= l2->val) || (l2 && !l1)) {
+            h->val = l2->val;
+            l2=l2->next;
+        }
+    }
+
+    return ret;
+}
+
+/* Original solution
 struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
     struct ListNode head, *p;
     
@@ -35,7 +64,7 @@ struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
     
     return p;
 }
-
+*/
 
 /*
 Difficulty:Easy
