@@ -17,6 +17,37 @@ Output: 7 -> 0 -> 8
  *     struct ListNode *next;
  * };
  */
+
+// Runtime 0ms Beats 100.00%, Memory 12.71MB Beats 20.25%
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    int d=0;
+    struct ListNode p, *h;
+
+    h=&p;
+
+    while(l1 || l2 || d!=0 ) {
+        h->next = malloc(sizeof(struct ListNode));
+        h=h->next;
+        h->next=NULL;
+        int v=0;
+        if(l1) {
+            v=l1->val;
+            l1=l1->next;
+        }
+
+        if(l2) {
+            v=l2->val + v;
+            l2=l2->next;
+        }
+        d=d+v;
+        h->val=d%10;
+        d=d/10;
+    }
+
+    return p.next;
+}
+
+/*
 struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     struct ListNode *head = NULL;
     struct ListNode *p, *q;
@@ -48,7 +79,7 @@ struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
     }
     return head;
 }
-
+*/
 
 /*
 Difficulty:Medium
