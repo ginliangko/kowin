@@ -14,6 +14,8 @@ The maximum depth is the number of nodes along the longest path from the root no
  *     struct TreeNode *right;
  * };
  */
+
+//Runtime 0ms Beats 100.00%, Memory 11.42MB Beats 10.01%
 int maxDepth(struct TreeNode* root) {
     int l, r;
     
