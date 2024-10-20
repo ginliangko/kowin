@@ -31,7 +31,6 @@ Return the following binary tree:
 typedef struct {
     int *preorder;
     int pre_idx;
-    int pre_sz;
     int *inorder;
 } data_t;
 ​
@@ -59,7 +58,6 @@ struct TreeNode* buildTree(int* preorder, int preorderSize, int* inorder, int in
     
     data.preorder = preorder;
     data.pre_idx = 0;
-    data.pre_sz = preorderSize;
     data.inorder = inorder;
     
     return make_tree(&data, 0, inorderSize);
