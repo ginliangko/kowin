@@ -21,28 +21,22 @@ int prev=-1;
 int inorder(struct TreeNode *r) {
     if(!r)  return INT_MAX;
 
-    int min=INT_MAX;
-
-    int ret = inorder(r->left);
-    min = min<ret?min:ret;
+    int minDiff = inorder(r->left);
 
     if(prev != -1) {
         int diff = r->val - prev;
-        min = min<diff?min:diff;
+        minDiff = minDiff<diff?minDiff:diff;
     }
 
     prev=r->val;
 
-    ret = inorder(r->right);
-    min = min<ret?min:ret;
-    
-    return min;
+    int ret = inorder(r->right);
+    minDiff = minDiff<ret?minDiff:ret;
+    return minDiff;
 }
 
 int getMinimumDifference(struct TreeNode* root) {
-    int ret = inorder(root);
+    prev = -1;
 
-    printf("%d", ret);
-    
-    return ret;
+    return inorder(root);
 }
