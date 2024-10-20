@@ -20,6 +20,8 @@ Example 2:
   Input: root = [3,9,20,15,7]
   Output: [3.00000,14.50000,11.00000]
 */
+
+// Runtime 0ms Beats 100.00%, Memory 17.09MB Beats 28.05%
 double* averageOfLevels(struct TreeNode* root, int* returnSize) {
     
     if(!root)   return NULL;
