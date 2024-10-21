@@ -8,7 +8,20 @@ Each time you can either climb 1 or 2 steps. In how many distinct ways can you c
 
 Note: Given n will be a positive integer.
 */
+// Runtime 0ms Beats 100.00%, Memory 8.02MB Beats 18.38%
+int climbStairs(int n) {
 
+    int *dp=malloc((n+1)*sizeof(int));
+    dp[0]=dp[1]=1;
+
+    for(int i=2; i<=n; i++) {
+        dp[i]=dp[i-1]+dp[i-2];
+    }
+    
+    return dp[n];
+}
+
+/* Original solution
 int climbStairs(int n) {
     int p, pp, k, i;
     
@@ -26,7 +39,7 @@ int climbStairs(int n) {
     
     return p;
 }
-
+*/
 
 /*
 Difficulty:Easy
