@@ -37,6 +37,8 @@ Binary tree [1,2,3], return false.
  *     struct TreeNode *right;
  * };
  */
+
+// Runtime 0ms Beats 100.00%, Memory 11.94MB Beats59.34%
 bool isValid(struct TreeNode* p, struct TreeNode** prev) {
     if (!p) return true;
     if (!isValid(p->left, prev)) return false;
