@@ -20,6 +20,27 @@ Credits:Special thanks to @ts for adding this problem and creating all test case
  *     struct TreeNode *right;
  * };
  */
+
+// Runtime 0ms Beats 100.00%, Memory 13.30MB Beats 99.72%
+int cnt=0;
+int dep=0;
+int target=0;
+void inorder(struct TreeNode *r) {
+    if(!r) return;
+
+    inorder(r->left);
+    if(++cnt==dep)    target=r->val;
+    inorder(r->right);
+}
+
+int kthSmallest(struct TreeNode* root, int k) {
+    cnt=0;
+    dep=k;
+    inorder(root);
+    return target;
+}
+
+/* Original solution
 int count(struct TreeNode *node) {
     if (!node) return 0;
     return count(node->left) + count(node->right) + 1;
@@ -36,7 +57,7 @@ int kthSmallest(struct TreeNode* root, int k) {
     }
     return kthSmallest(node->right, k - n - 1);
 }
-
+*/
 
 /*
 Difficulty:Medium
