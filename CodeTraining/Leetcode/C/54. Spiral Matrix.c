@@ -21,6 +21,47 @@ You should return [1,2,3,6,9,8,7,4,5].
 /**
  * Note: The returned array must be malloced, assume caller calls free().
  */
+
+// Runtime 0ms Beats 100.00%, Memory 8.27MB Beats 48.47%
+int* spiralOrder(int** matrix, int matrixSize, int* matrixColSize, int* returnSize) {
+    int x_start=0, y_end=matrixSize-1, y_start=0, x_end=(*matrixColSize)-1, total=matrixSize*(*matrixColSize);
+    int *ret=malloc(total* sizeof(int));
+    int idx=0, d=0, x_d=1, y_d=0;
+    int i=x_start, j=y_start;
+
+    while(i<=x_end && j<=y_end && idx<total) {
+        ret[idx++]=matrix[j][i];
+        if(1)  {
+            if(i==x_end && d==0) {
+                y_start++;
+                x_d=0;
+                y_d=1;
+                d++;
+            } else if(j==y_end && d==1) {
+                x_end--;
+                x_d=-1;
+                y_d=0;
+                d++;
+            } else if(i==x_start && d==2) {
+                y_end--;
+                x_d=0;
+                y_d=-1;
+                d++;
+            } else if(j==y_start && d==3) {
+                x_start++;
+                x_d=1;
+                y_d=0;
+                d=0;
+            }
+        }
+        i+=x_d;
+        j+=y_d;
+    }
+    *returnSize=idx;
+    return ret;
+}
+
+// Original solution
 int* spiralOrder(int** matrix, int matrixRowSize, int matrixColSize) {
     int top, bottom, left, right, where;
     int i;
