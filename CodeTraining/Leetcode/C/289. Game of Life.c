@@ -31,6 +31,42 @@ In this question, we represent the board using a 2D array. In principle, the boa
 Credits:Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
 */
 
+int calNeighbor(int** board, int boardSize, int boardColSize, int x, int y) {
+    int sum=0;
+
+    for(int j=y-1; j<=y+1; j++) {
+        for(int i=x-1; i<=x+1; i++) {
+            if((i!=x || j!=y) && (i>=0 && j>=0 && i<boardColSize && j<boardSize)){
+                int v=board[j][i];
+                if(board[j][i]==-1) v=1;
+                else if(board[j][i]==2) v=0;
+                sum+=v;
+            }
+        }
+    }
+    return sum;
+}
+
+void gameOfLife(int** board, int boardSize, int* boardColSize) {
+
+    for(int j=0; j<boardSize; j++) {
+        for(int i=0; i<(*boardColSize); i++) {
+            int n=calNeighbor(board, boardSize, (*boardColSize), i, j);
+            if(n<2 && board[j][i]==1)       board[j][i]=-1;
+            else if(n>3 && board[j][i]==1)  board[j][i]=-1;
+            else if(n==3 && board[j][i]==0) board[j][i]=2;
+        }
+    }
+
+    for(int j=0; j<boardSize; j++) {
+        for(int i=0; i<(*boardColSize); i++) {
+            if(board[j][i]==-1)       board[j][i]=0;
+            else if(board[j][i]==2)   board[j][i]=1;
+        }
+    }
+}
+
+/* Original solution
 void update(int **board, int rowsz, int colsz, int *visited, int x, int y) {
     int a, b, c, d, e, f, g, h;
 
@@ -90,6 +126,7 @@ void gameOfLife(int** board, int boardRowSize, int boardColSize) {
     update(board, boardRowSize, boardColSize, visited, 0, 0);
     free(visited);
 }
+*/
 
 /*
 Difficulty:Medium
