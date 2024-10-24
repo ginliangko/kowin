@@ -7,6 +7,28 @@ Follow up:
 Could you do this in-place?
 */
 
+void rotate(int** matrix, int matrixSize, int* matrixColSize) {
+    int n=matrixSize;
+    int tmp;
+
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<i; j++) {
+            tmp=matrix[i][j];
+            matrix[i][j]=matrix[j][i];
+            matrix[j][i]=tmp;
+        }
+    }
+
+    for(int i=0; i<n/2; i++) {
+        for(int j=0; j<n; j++) {
+            tmp=matrix[j][i];
+            matrix[j][i]=matrix[j][n-1-i];
+            matrix[j][n-1-i]=tmp;
+        }
+    }
+}
+
+/* original solution
 #define RIGHT(I)    (matrix[I][y])
 #define BOTTOM(I)   (matrix[y][y + x - I])
 #define LEFT(I)     (matrix[y + x - I][x])
@@ -35,7 +57,7 @@ void spin(int **matrix, int x, int y) {
 void rotate(int** matrix, int matrixRowSize, int matrixColSize) {
     spin(matrix, 0, matrixRowSize - 1);
 }
-
+*/
 
 /*
 Difficulty:Medium
