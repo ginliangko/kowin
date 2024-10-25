@@ -1,26 +1,48 @@
 /*
 290. Word Pattern
-
 Given a pattern and a string str, find if str follows the same pattern.
  Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty word in str.
 
 Examples:
-
 pattern = "abba", str = "dog cat cat dog" should return true.
 pattern = "abba", str = "dog cat cat fish" should return false.
 pattern = "aaaa", str = "dog cat cat dog" should return false.
 pattern = "abba", str = "dog dog dog dog" should return false.
 
-
-
-
 Notes:
 You may assume pattern contains only lowercase letters, and str contains lowercase letters separated by a single space.
-
 
 Credits:Special thanks to @minglotus6 for adding this problem and creating all test cases.
 */
 
+bool wordPattern(char* pattern, char* s) {
+    char *m[26]={NULL};
+    int i=0;
+
+    char *w=strtok(s, " ");
+    while(w){
+        int p=pattern[i]-'a';
+        if(p<0) return false;
+        
+        if(m[p]==NULL) {
+            for(int j=0; j<26; j++) {
+                if(m[j]!=NULL && !strcmp(m[j], w))   return false;
+            }
+
+            m[p]=w;
+        } else if(strcmp(m[p], w)) {
+            return false;
+        }
+        w=strtok(NULL, " ");
+        i++;
+    }
+
+    if(i!=strlen(pattern))   return false;
+
+    return true;
+}
+
+/* Original solution
 bool wordPattern(char* pattern, char* str) {
     char *bucket[26] = { 0 };
     int   len   [26] = { 0 };
@@ -59,6 +81,7 @@ bool wordPattern(char* pattern, char* str) {
     
     return (!*pattern && !*str) ? true : false;
 }
+*/
 
 /*
 Difficulty:Easy
