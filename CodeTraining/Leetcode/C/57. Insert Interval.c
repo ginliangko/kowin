@@ -23,6 +23,44 @@ This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
  * Return an array of size *returnSize.
  * Note: The returned array must be malloced, assume caller calls free().
  */
+ */
+int** insert(int** intervals, int intervalsSize, int* intervalsColSize, int* newInterval, int newIntervalSize, int* returnSize, int** returnColumnSizes) {
+    int **ans=malloc((intervalsSize+1)*sizeof(int *));
+    int i=0, idx=0;
+
+    *returnColumnSizes=malloc((intervalsSize+1)*sizeof(int));
+
+    while(i<intervalsSize && intervals[i][1]<newInterval[0]) {
+        ans[idx]=malloc(2*sizeof(int));
+        ans[idx][0]=intervals[i][0];
+        ans[idx][1]=intervals[i][1];
+        (*returnColumnSizes)[idx++]=2;
+        i++;
+    }
+
+    while(i<intervalsSize && intervals[i][0]<=newInterval[1]) {
+        newInterval[0]=intervals[i][0]<newInterval[0]?intervals[i][0]:newInterval[0];
+        newInterval[1]=intervals[i][1]>newInterval[1]?intervals[i][1]:newInterval[1];
+        i++;
+    }
+
+    ans[idx]=malloc(2*sizeof(int));
+    ans[idx][0]=newInterval[0];
+    ans[idx][1]=newInterval[1];
+    (*returnColumnSizes)[idx++]=2;
+
+    while(i<intervalsSize) {
+        ans[idx]=malloc(2*sizeof(int));
+        ans[idx][0]=intervals[i][0];
+        ans[idx][1]=intervals[i][1];
+        (*returnColumnSizes)[idx++]=2;
+        i++;
+    }
+
+    *returnSize=idx;
+    return ans;
+}
+/* Original solution
 int lower_bound(struct Interval *p, int i, int j, int k) {
     int end = j, m;
     
@@ -96,7 +134,7 @@ struct Interval* insert(struct Interval* intervals, int intervalsSize, struct In
     
     return p;
 }
-
+*/
 
 /*
 Difficulty:Hard
