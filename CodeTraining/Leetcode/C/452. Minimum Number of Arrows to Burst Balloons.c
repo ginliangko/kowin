@@ -22,10 +22,6 @@ Explanation: The balloons can be burst by 2 arrows:
 - Shoot an arrow at x = 2, bursting the balloons [1,2] and [2,3].
 - Shoot an arrow at x = 4, bursting the balloons [3,4] and [4,5].
 */
-typedef struct data_s{
-    int s;
-    int e;
-} data_t;
 
 int comp(const void **a, const void **b) {
     int end1=(*(int **)a)[0];
@@ -35,19 +31,15 @@ int comp(const void **a, const void **b) {
     return 0;
 }
 int findMinArrowShots(int** points, int pointsSize, int* pointsColSize) {
-    data_t ans;
-    int i=0, cnt=0;
+    int i=0, cnt=0, end=0;
     qsort(points, pointsSize, 2*sizeof(int),comp);
 
-    ans.s=points[0][0];
-    ans.e=points[0][1];
+    end=points[0][1];
     while(i<pointsSize) {
-        if(ans.e>=points[i][0]) {
-            ans.s=points[i][0];
-            ans.e=ans.e<points[i][1]?ans.e:points[i][1];
+        if(end>=points[i][0]) {
+            end=end<points[i][1]?end:points[i][1];
         } else {
-            ans.s=points[i][0];
-            ans.e=points[i][1];
+            end=points[i][1];
             cnt++;
         }
         i++;
