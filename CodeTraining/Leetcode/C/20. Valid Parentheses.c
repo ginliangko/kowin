@@ -13,16 +13,12 @@ bool isValid(char* s) {
     int p=0;
 
     for(int i=0; i<len; i++) {
-        char c=s[i];
-        switch(c) {
-        case '(':
-        case '[':
-        case '{':   stack[p++]=c;    break;
-        case ')':   if(p<=0 || stack[--p]!='(')    return false;    break;
-        case ']':   if(p<=0 || stack[--p]!='[')    return false;    break;
-        case '}':   if(p<=0 || stack[--p]!='{')    return false;    break;
-        }
+        if(s[i]==')')       {if(p<=0 || stack[--p]!='(')    return false;}
+        else if(s[i]==']')  {if(p<=0 || stack[--p]!='[')    return false;}
+        else if(s[i]=='}')  {if(p<=0 || stack[--p]!='{')    return false;}
+        else stack[p++]=s[i];
     }
+
     if(p>0) return false;
     return true;
 }
