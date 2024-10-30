@@ -1,22 +1,9 @@
-/*
-155. Min Stack
-
+/* 155. Min Stack
 Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
-
-
 push(x) -- Push element x onto stack.
-
-
 pop() -- Removes the element on top of the stack.
-
-
 top() -- Get the top element.
-
-
 getMin() -- Retrieve the minimum element in the stack.
-
-
-
 
 Example:
 MinStack minStack = new MinStack();
@@ -29,6 +16,49 @@ minStack.top();      --> Returns 0.
 minStack.getMin();   --> Returns -2.
 */
 
+#define STACK_LEN   10240
+
+typedef struct {
+    int *data;
+    int idx;
+} MinStack;
+
+MinStack* minStackCreate() {
+    MinStack *obj=malloc(sizeof(MinStack));
+    obj->data=malloc(STACK_LEN*sizeof(int));
+    obj->idx = 0;
+    return obj;
+}
+
+void minStackPush(MinStack* obj, int val) {
+    if(obj->idx<STACK_LEN)
+        obj->data[obj->idx++]=val;
+}
+
+void minStackPop(MinStack* obj) {
+    if(obj->idx>0)
+        obj->idx--;
+}
+
+int minStackTop(MinStack* obj) {
+    if(obj->idx<0 || obj->idx>STACK_LEN)
+        return -1;
+    return obj->data[obj->idx-1];
+}
+
+int minStackGetMin(MinStack* obj) {
+    int min=INT_MAX;
+    for(int i=0; i<obj->idx; i++) {
+        min=min<obj->data[i]?min:obj->data[i];
+    }
+    return min;
+}
+
+void minStackFree(MinStack* obj) {
+    free(obj);
+}
+
+/* original solution
 class MinStack {
 private:
     int sz = 1000;
@@ -71,7 +101,8 @@ public:
         return min;
     }
 };
-​
+​*/
+
 /**
  * Your MinStack object will be instantiated and called as such:
  * MinStack obj = new MinStack();
