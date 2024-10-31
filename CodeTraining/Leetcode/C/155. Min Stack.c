@@ -17,7 +17,6 @@ minStack.getMin();   --> Returns -2.
 */
 
 #define STACK_LEN   10240
-
 typedef struct {
     int *data;
     int idx;
@@ -66,7 +65,7 @@ private:
     int *buff;
     int min;
 public:
-    /** initialize your data structure here. */
+    // initialize your data structure here.
     MinStack() {
         buff = (int *)malloc(sz * sizeof(int));
         //assert(buff);
