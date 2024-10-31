@@ -16,22 +16,31 @@ minStack.top();      --> Returns 0.
 minStack.getMin();   --> Returns -2.
 */
 
+
 #define STACK_LEN   10240
+
 typedef struct {
     int *data;
+    int *min;
     int idx;
 } MinStack;
 
 MinStack* minStackCreate() {
     MinStack *obj=malloc(sizeof(MinStack));
     obj->data=malloc(STACK_LEN*sizeof(int));
+    obj->min=malloc(STACK_LEN*sizeof(int));
     obj->idx = 0;
     return obj;
 }
 
 void minStackPush(MinStack* obj, int val) {
-    if(obj->idx<STACK_LEN)
+    if(obj->idx<STACK_LEN) {
+        if(obj->idx<=0)
+            obj->min[obj->idx]=val;
+        else
+            obj->min[obj->idx]=obj->min[obj->idx-1]<val?obj->min[obj->idx-1]:val;
         obj->data[obj->idx++]=val;
+    }
 }
 
 void minStackPop(MinStack* obj) {
@@ -46,11 +55,8 @@ int minStackTop(MinStack* obj) {
 }
 
 int minStackGetMin(MinStack* obj) {
-    int min=INT_MAX;
-    for(int i=0; i<obj->idx; i++) {
-        min=min<obj->data[i]?min:obj->data[i];
-    }
-    return min;
+    if(obj->idx==0) return -1;
+    return obj->min[obj->idx-1];
 }
 
 void minStackFree(MinStack* obj) {
