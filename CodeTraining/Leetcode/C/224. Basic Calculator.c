@@ -9,13 +9,7 @@ Some examples:
 " 2-1 + 2 " = 3
 "(1+(4+5+2)-3)+(6+8)" = 23
 */
-typedef struct {
-    int *p;     // Data
-    int sz;     // Stack Size
-    int n;      // Data index
-} s_t;
-
-int parse(char **sp, int *k) {
+int parse(char **sp, int* k) {
     char *s = *sp;
 
     while(*s == ' ')   s++;
@@ -43,64 +37,47 @@ int parse(char **sp, int *k) {
     return 2;   // Number
 }
 
-void push(s_t *stack, int k) {
-    if(stack->sz == stack->n) {
-        stack->sz *= 2;
-        stack->p = realloc(stack->p, stack->sz * sizeof(int));
-    }
-    stack->p[stack->n++] = k;
-}
-
-int low_op(s_t *ops, int k) {
+int low_op(int* ops, int oi, int k) {
     const int priority[] = { 0, 2, 2, 3, 3, 1, 1 }; // null, +, -, *, /, (, )
-    return (priority[ops->p[ops->n - 1]] >= priority[k]) ? 1 : 0;
+    if(oi==0)   return 0;
+    return (priority[ops[oi-1]] >= priority[k]) ? 1 : 0;
 }
 
 int calculate(char* s) {
-    s_t data = { 0 }, ops = { 0 };
-    int x, k, d1, d2, o;
+    int len=strlen(s);
+    int d[128]={0}, o[128]={0};
+    int di=0, oi=0, k=0, a=0, b=0, x=0;
 
-    data.n = ops.n = 0;
-    data.sz = ops.sz = 10;
-    data.p = malloc(data.sz * sizeof(int));
-    ops.p = malloc(ops.sz * sizeof(int));
-
-    push(&data, 0); // put a zero in case of with a null input
-    push(&ops, 0);  // put a null operator on top of operator stack
-
+    d[di++]=0;
+    o[oi++]=0;
     do {
         x = parse(&s, &k);
         if (x == 2) {           // data, push to stack
-            push(&data, k);
+            d[di++]=k;
         } else if (k == 5) {    // left parenthese, always push
-            push(&ops, k);
+            o[oi++]=k;
         } else {                // operator
-            while(low_op(&ops, k)) {
-                o = ops.p[--ops.n];
-                if (o == 0 || o == 5) break; // end of input or left parenthese
-                d2 = data.p[--data.n];
-                d1 = data.p[--data.n];
-                switch(o) {
-                    case 1:  d1 = d1 + d2; break;           // '+'
-                    case 2:  d1 = d1 - d2; break;           // '-'
-                    case 3:  d1 = d1 * d2; break;           // '*'
-                    case 4:  d1 = d1 / d2; break;           // '/'
-                    default:    break;
+            while(low_op(o, oi, k)) {
+                int op = o[--oi];
+                if (op== 0 || op == 5) break; // end of input or left parenthese
+                b = d[--di];
+                a = d[--di];
+                switch(op) {
+                    case 1:  a = a + b; break;  // '+'
+                    case 2:  a = a - b; break;  // '-'
+                    case 3:  a = a * b; break;  // '*'
+                    case 4:  a = a / b; break;  // '/'
+                    default:            break;
                 }
-                push(&data, d1);
+                d[di++]=a;
             }
-            if(k && k != 6) push(&ops, k);  // ignore end or right parenthese
+
+            if(k && k != 6)     o[oi++]=k;  // ignore end or right parenthese
         }
     } while(x);
 
-    k = data.p[data.n - 1];
-
-    free(data.p);
-    free(ops.p);
-
-    return k;
+    return d[di-1];
 }
-
 /*
 Difficulty:Hard
 Total Accepted:51.6K
