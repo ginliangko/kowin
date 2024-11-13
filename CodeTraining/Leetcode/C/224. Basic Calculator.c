@@ -9,6 +9,66 @@ Some examples:
 " 2-1 + 2 " = 3
 "(1+(4+5+2)-3)+(6+8)" = 23
 */
+typedef struct {
+    int d;
+    int sign;
+} s_t;
+
+int parseNumber(char **sp, int* k) {
+    char *s = *sp;
+
+    while(*s == ' ')   s++;
+
+    *k = 0;
+
+    if(*s == 0)    return 0;    //The End
+
+    if(*s == '+' || *s == '-' || *s == '(' || *s == ')') {
+        *k = *s == '+' ? 1 :
+             *s == '-' ? 2 :
+             *s == '(' ? 3 : 4;
+        *sp = ++s;
+        return 1;   // Operator
+    }
+
+    while(*s >= '0' && *s <= '9') {
+        *k = ((*k) * 10) + (*s - '0');
+        s++;
+    }
+
+    *sp = s;
+    return 2;   // Number
+}
+
+int calculate(char* s) {
+    s_t d[1024];
+    int sign=1, k, i=0, sum=0, x;
+
+    do {
+        x=parseNumber(&s,  &k);
+
+        // 0: end of string, 1: operator, 2: number, 
+        if(x==2) {
+            sum+= k*sign;
+            sign=1;
+        } else if(x==1) {
+            if(k==2) {          //'-'
+                sign=-1;
+            } else if(k==3) {   // '('
+                d[i].d = sum;
+                d[i++].sign= sign;
+                sign=1;
+                sum=0;
+            } else if(k==4) {   // ')'
+                sum = d[--i].d + (sum*d[i].sign);
+            }
+        }
+    } while(x);
+
+    return sum;
+}
+
+/* Solution 2
 int parse(char **sp, int* k) {
     char *s = *sp;
 
@@ -78,6 +138,8 @@ int calculate(char* s) {
 
     return d[di-1];
 }
+*/
+
 /*
 Difficulty:Hard
 Total Accepted:51.6K
@@ -87,13 +149,9 @@ Total Submissions:190.7K
 Companies Google
 Related Topics Stack Math
 Similar Questions 
-                
-                  
+
                     Evaluate Reverse Polish Notation
-                  
                     Basic Calculator II
-                  
                     Different Ways to Add Parentheses
-                  
                     Expression Add Operators
 */
