@@ -1,10 +1,5 @@
-/*
-138. Copy List with Random Pointer
-
+/* 138. Copy List with Random Pointer
 A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
-
-
-
 Return a deep copy of the list.
 */
 
@@ -16,6 +11,34 @@ Return a deep copy of the list.
  *     struct RandomListNode *random;
  * };
  */
+
+struct Node* copyRandomList(struct Node* head) {
+   	struct Node *h=malloc(sizeof(struct Node));
+    struct Node *p=h;
+
+    if(!head)    return head;
+
+    while(head) {
+        p->next = malloc(sizeof(struct Node));
+        p=p->next;
+        p->next=NULL;
+        p->val = head->val;
+        p->random=head->random;
+        head->random=p;
+        head=head->next;
+    }
+
+    p=h->next;
+    while(p) {
+        struct Node *t=p->random;
+        if(t)  p->random=t->random;
+        p=p->next;
+    }
+
+    return h->next;
+}
+
+/*
 struct RandomListNode *copyRandomList(struct RandomListNode *head) {
     struct RandomListNode **srcstack;
     struct RandomListNode **dststack;
@@ -100,7 +123,7 @@ struct RandomListNode *copyRandomList(struct RandomListNode *head) {
     
     return ret;
 }
-
+*/
 
 /*
 Difficulty:Medium
