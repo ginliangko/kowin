@@ -11,7 +11,6 @@ Input: head = [5], left = 1, right = 1
 Output: [5]
 */
 
- */
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     struct ListNode *dummy = malloc(sizeof(struct ListNode)); // created dummy node
     dummy->next = head;
@@ -69,5 +68,4 @@ struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     
     return head;
 }
-
 */
