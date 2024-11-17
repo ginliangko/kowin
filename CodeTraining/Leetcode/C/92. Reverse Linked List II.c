@@ -13,6 +13,45 @@ Output: [5]
 
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     struct ListNode *p=head;
+    struct ListNode **s=malloc((right-left+1) * sizeof(struct ListNode *));
+    int idx=0, i=1;
+
+    if(!head)   return head;
+
+    while(p && i<=right) {
+        if(i>=left)     s[idx++]=p;
+        p=p->next;
+        i++;
+    }
+
+    i=1;
+    if(i==left) {
+        head=s[--idx];
+        i++;
+    }
+    struct ListNode *h=head, *prev=NULL;
+    while(h && i<=right) {
+        if(i>=left) {
+            h->next=s[--idx];
+            if(i==left)     prev->next=h->next;
+        } else {
+            prev=h;
+        }
+
+        h=h->next;
+        i++;
+    }
+
+    if(h)     h->next=p;
+
+    free(s);
+    
+    return head;
+}
+
+/* Solution 2
+struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
+    struct ListNode *p=head;
     int *s=malloc((right-left+1) * sizeof(int));
     int idx=0, i=1;
 
@@ -35,3 +74,4 @@ struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     
     return head;
 }
+*/
