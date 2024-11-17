@@ -11,6 +11,27 @@ Input: head = [5], left = 1, right = 1
 Output: [5]
 */
 
+ */
+struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
+    struct ListNode *dummy = malloc(sizeof(struct ListNode)); // created dummy node
+    dummy->next = head;
+    struct ListNode *prev = dummy; // intialising prev pointer on dummy node
+    
+    for(int i = 0; i < left - 1; i++)
+        prev = prev->next; // adjusting the prev pointer on it's actual index
+    
+    struct ListNode *curr = prev->next; // curr pointer will be just after prev
+    // reversing
+    for(int i = 0; i < right - left; i++){
+        struct ListNode *forw = curr->next; // forw pointer will be after curr
+        curr->next = forw->next;
+        forw->next = prev->next;
+        prev->next = forw;
+    }
+    return dummy->next;
+}
+
+/* Solution 2
 struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     struct ListNode *p=head;
     struct ListNode **s=malloc((right-left+1) * sizeof(struct ListNode *));
@@ -49,29 +70,4 @@ struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
     return head;
 }
 
-/* Solution 2
-struct ListNode* reverseBetween(struct ListNode* head, int left, int right) {
-    struct ListNode *p=head;
-    int *s=malloc((right-left+1) * sizeof(int));
-    int idx=0, i=1;
-
-    if(!head)   return head;
-
-    while(p && i<=right) {
-        if(i>=left)    s[idx++]=p->val;
-        p=p->next;
-        i++;
-    }
-
-    i=1;
-    p=head;
-    while(p && i<=right) {
-        if(i>=left)     p->val=s[--idx];
-        p=p->next;
-        i++;
-    }
-    free(s);
-    
-    return head;
-}
 */
