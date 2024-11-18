@@ -1,26 +1,11 @@
-/*
-25. Reverse Nodes in k-Group
-
-Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
-
-
-
-k is a positive integer and is less than or equal to the length of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
-
-You may not alter the values in the nodes, only nodes itself may be changed.
-
-Only constant memory is allowed.
-
+/* 25. Reverse Nodes in k-Group
+Given a linked list, reverse the nodes of a linked list k at a time and return its modified list. k is a positive integer and is less than or equal to the length
+of the linked list. If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is. You may not alter the values in the nodes, 
+only nodes itself may be changed. Only constant memory is allowed.
 
 For example,
 Given this linked list: 1->2->3->4->5
-
-
-
 For k = 2, you should return: 2->1->4->3->5
-
-
-
 For k = 3, you should return: 3->2->1->4->5
 */
 
@@ -31,6 +16,36 @@ For k = 3, you should return: 3->2->1->4->5
  *     struct ListNode *next;
  * };
  */
+
+struct ListNode* reverseKGroup(struct ListNode* head, int k) {
+    if(k<=1)    return head;
+
+    int cnt=0;
+    struct ListNode *dummy=malloc(sizeof(struct ListNode));
+    dummy->next=head;
+
+    struct ListNode *h=head;
+    while(h) {
+        h=h->next;
+        cnt++;
+    }
+
+    struct ListNode *prev=dummy;
+    for(int i=0; i<cnt/k; i++) {
+        struct ListNode *cur=prev->next;
+        for(int j=0; j<k-1; j++) {
+            struct ListNode *forw=cur->next;
+            cur->next=forw->next;
+            forw->next=prev->next;
+            prev->next=forw;
+        }
+        prev=cur;
+    }
+    
+    return dummy->next;
+}
+
+/*
 struct ListNode* reverseKGroup(struct ListNode* head, int k) {
     struct ListNode *node, *next;
     struct ListNode **stack;
@@ -72,7 +87,7 @@ struct ListNode* reverseKGroup(struct ListNode* head, int k) {
     free(stack);
     return dummy.next;
 }
-
+*/
 
 /*
 Difficulty:Hard
